@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Clientes.API.Context;
 using Clientes.API.Models;
+using Serilog;
 
 namespace Clientes.API.Controllers
 {
@@ -43,6 +44,9 @@ namespace Clientes.API.Controllers
                 }
             }
 
+            // Log
+            Log.Information("Endpoint access POST api/clientes");
+
             return CreatedAtAction("GetClienteModel", new { id = clienteModel.CodCliente }, clienteModel);
         }
 
@@ -51,6 +55,9 @@ namespace Clientes.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClienteModel>>> GetClientes()
         {
+            // Log
+            Log.Information("Endpoint access GET api/clientes");
+
             return await _db.Clientes.ToListAsync();
         }
 
@@ -64,6 +71,9 @@ namespace Clientes.API.Controllers
             {
                 return NotFound();
             }
+
+            // Log
+            Log.Information($"Endpoint access GET api/clientes/{id}");
 
             return clienteModel;
         }
@@ -82,11 +92,17 @@ namespace Clientes.API.Controllers
             try
             {
                 await _db.SaveChangesAsync();
+
+                // Log
+                Log.Information($"Endpoint access PUT api/clientes/{id}");
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!ClienteModelExists(id))
                 {
+                    // Log
+                    Log.Error($"Endpoint access PUT api/clientes/{id} (not found)");
+
                     return NotFound();
                 }
                 else
@@ -105,11 +121,16 @@ namespace Clientes.API.Controllers
             var clienteModel = await _db.Clientes.FindAsync(id);
             if (clienteModel == null)
             {
+                Log.Error($"Endpoint access DELETE api/clientes/{id} (not found)");
+
                 return NotFound();
             }
 
             _db.Clientes.Remove(clienteModel);
             await _db.SaveChangesAsync();
+
+            // Log
+            Log.Information($"Endpoint access DELETE api/clientes/{id}");
 
             return NoContent();
         }
