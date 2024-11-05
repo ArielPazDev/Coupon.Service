@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Backend.API.RESTful.Models
+namespace Clientes.API.Models
 {
     [Table("Clientes")]
     public class ClienteModel
