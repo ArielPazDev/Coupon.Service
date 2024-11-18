@@ -1,7 +1,7 @@
 ﻿using Clientes.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Clientes.API.Context
+namespace Clientes.API.Contexts
 {
     public class DatabaseContext: DbContext
     {

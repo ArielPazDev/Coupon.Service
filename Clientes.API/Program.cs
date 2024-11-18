@@ -1,4 +1,6 @@
-using Clientes.API.Context;
+using Clientes.API.Contexts;
+using Clientes.API.Interfaces;
+using Clientes.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -8,8 +10,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
-// Swagger
-builder.Services.AddSwaggerGen();
+// Dependency Injection
+builder.Services.AddScoped<IClienteService, ClienteService>();
 
 // Database
 builder.Services.AddDbContext<DatabaseContext>
@@ -23,6 +25,9 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(evt => evt.Level == Serilog.Events.LogEventLevel.Information)
     .WriteTo.File("Logs/Information-.log", rollingInterval: RollingInterval.Day))
     .CreateLogger();
+
+// Swagger
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
