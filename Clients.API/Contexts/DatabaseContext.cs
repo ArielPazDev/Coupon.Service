@@ -1,17 +1,17 @@
-﻿using Clientes.API.Models;
+﻿using Clients.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Clientes.API.Contexts
+namespace Clients.API.Contexts
 {
     public class DatabaseContext: DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        public DbSet<ClienteModel> Clientes { get; set; }
+        public DbSet<ClientModel> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ClienteModel>().HasKey(cliente => cliente.CodCliente);
+            modelBuilder.Entity<ClientModel>().HasKey(cliente => cliente.CodCliente);
 
             base.OnModelCreating(modelBuilder);
         }

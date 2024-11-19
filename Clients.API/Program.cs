@@ -1,17 +1,18 @@
-using Clientes.API.Contexts;
-using Clientes.API.Interfaces;
-using Clientes.API.Services;
+using Clients.API.Contexts;
+using Clients.API.Interfaces;
+using Clients.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Dependency Injection
-builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<ClientAPIInterface, ClientAPIService>();
 
 // Database
 builder.Services.AddDbContext<DatabaseContext>
@@ -31,6 +32,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
