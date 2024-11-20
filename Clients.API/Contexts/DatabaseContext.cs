@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Clients.API.Contexts
 {
-    public class DatabaseContext: DbContext
+    public class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
@@ -11,7 +11,7 @@ namespace Clients.API.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ClientModel>().HasKey(cliente => cliente.CodCliente);
+            modelBuilder.Entity<ClientModel>().HasKey(c => c.CodCliente);
 
             base.OnModelCreating(modelBuilder);
         }

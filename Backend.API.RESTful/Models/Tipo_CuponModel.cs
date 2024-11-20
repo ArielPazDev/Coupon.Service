@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Backend.API.RESTful.Models
 {
     [Table("Tipo_Cupon")]
-    public class TipoCuponModel
+    public class Tipo_CuponModel
     {
         [Key]
         public int Id_Tipo_Cupon { get; set; }

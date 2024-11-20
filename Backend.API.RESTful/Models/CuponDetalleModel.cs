@@ -7,8 +7,8 @@ namespace Backend.API.RESTful.Models
     public class CuponDetalleModel
     {
         [Key]
-        public int id_Cupon { get; set; }
-        public int id_Articulo { get; set; }
+        public int Id_Cupon { get; set; }
+        public int Id_Articulo { get; set; }
         public int Cantidad { get; set; }
     }
 }

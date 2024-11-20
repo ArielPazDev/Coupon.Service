@@ -7,7 +7,7 @@ namespace Backend.API.RESTful.Models
     public class CuponHistorialModel
     {
         [Key]
-        public int id_Cupon { get; set; }
+        public int Id_Cupon { get; set; }
         public string NroCupon { get; set; }
         public DateOnly FechaUso { get; set; }
         public string CodCliente {  get; set; }

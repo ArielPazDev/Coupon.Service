@@ -29,7 +29,6 @@ namespace Clients.API.Controllers
             try
             {
                 _db.Clients.Add(clientModel);
-
                 await _db.SaveChangesAsync();
 
                 // Log
@@ -95,10 +94,10 @@ namespace Clients.API.Controllers
                 return BadRequest();
             }
 
+            _db.Entry(clientModel).State = EntityState.Modified;
+
             try
             {
-                _db.Entry(clientModel).State = EntityState.Modified;
-
                 await _db.SaveChangesAsync();
 
                 // Log
@@ -130,6 +129,7 @@ namespace Clients.API.Controllers
 
             if (clientModel == null)
             {
+                // Log
                 Log.Information($"Endpoint access DELETE: api/clients/{id} (not found)");
 
                 return NotFound();
