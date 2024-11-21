@@ -26,26 +26,26 @@ namespace Backend.API.RESTful.Controllers
         }
 
         [HttpPost("SolicitudCupon")]
-        public async Task<IActionResult> SolicitudCupon(ClienteDTO clienteDTO)
+        public async Task<IActionResult> SolicitudCupon(ReclamarCuponDTO reclamarCuponDTO)
         {
             try
             {
-                if (clienteDTO.CodCliente.IsNullOrEmpty())
+                if (reclamarCuponDTO.CodCliente.IsNullOrEmpty())
                     throw new Exception("El CodCliente no puede estar vacio");
 
                 string nroCupon = await _cuponesService.GenerarNroCupon();
 
                 Cupon_ClienteModel cupon_ClienteModel = new Cupon_ClienteModel();
-                cupon_ClienteModel.Id_Cupon = clienteDTO.Id_Cupon;
+                cupon_ClienteModel.Id_Cupon = reclamarCuponDTO.Id_Cupon;
                 cupon_ClienteModel.NroCupon = nroCupon;
                 cupon_ClienteModel.FechaAsignado = DateTime.Now;
-                cupon_ClienteModel.CodCliente = clienteDTO.CodCliente;
+                cupon_ClienteModel.CodCliente = reclamarCuponDTO.CodCliente;
 
                 _db.Cupones_Clientes.Add(cupon_ClienteModel);
                 await _db.SaveChangesAsync();
 
-                if (!clienteDTO.CodCliente.IsNullOrEmpty())
-                    await _mailerService.SendEmail(clienteDTO.Email, nroCupon);
+                if (!reclamarCuponDTO.CodCliente.IsNullOrEmpty())
+                    await _mailerService.SendEmail(reclamarCuponDTO.Email, nroCupon);
 
                 return Ok(new
                 {
@@ -60,11 +60,11 @@ namespace Backend.API.RESTful.Controllers
         }
 
         [HttpPost("QuemadoCupon")]
-        public async Task<IActionResult> QuemadoCupon(string nroCupon)
+        public async Task<IActionResult> QuemadoCupon(UsarCuponDTO usarCuponDTO)
         {
             try
             {
-                var cupon_ClienteModel = await _db.Cupones_Clientes.FirstOrDefaultAsync(c => c.NroCupon == nroCupon);
+                var cupon_ClienteModel = await _db.Cupones_Clientes.FirstOrDefaultAsync(c => c.NroCupon == usarCuponDTO.NroCupon);
 
                 if (cupon_ClienteModel == null)
                 {
@@ -76,7 +76,7 @@ namespace Backend.API.RESTful.Controllers
 
                 Cupones_HistorialModel cupones_HistorialModel = new Cupones_HistorialModel();
                 cupones_HistorialModel.Id_Cupon = cupon_ClienteModel.Id_Cupon;
-                cupones_HistorialModel.NroCupon = nroCupon;
+                cupones_HistorialModel.NroCupon = usarCuponDTO.NroCupon;
                 cupones_HistorialModel.FechaUso = DateTime.Now;
                 cupones_HistorialModel.CodCliente = cupon_ClienteModel.CodCliente;
 
@@ -89,7 +89,7 @@ namespace Backend.API.RESTful.Controllers
                 return Ok(new
                 {
                     Mensaje = "El cupón se quemó",
-                    NroCupon = nroCupon
+                    NroCupon = usarCuponDTO.NroCupon
                 });
             }
             catch (Exception ex)

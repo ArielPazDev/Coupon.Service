@@ -1,6 +1,6 @@
 ﻿namespace Clients.API.DTOs
 {
-    public class ClienteAPIDTO
+    public class ReclamarCuponDTO
     {
         public int Id_Cupon { get; set; }
         //public string NroCupon { get; set; }

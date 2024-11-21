@@ -7,7 +7,7 @@ using Serilog;
 
 namespace Clients.API.Controllers
 {
-    [Route("api/cupones/solicitar")]
+    [Route("api/cupones")]
     [ApiController]
     public class ClienteAPIController : ControllerBase
     {
@@ -18,23 +18,45 @@ namespace Clients.API.Controllers
             _clientAPI = clientAPI;
         }
 
-        // POST: api/cupones/solicitar
-        [HttpPost]
-        public async Task<IActionResult> SendRequestCoupon([FromBody] ClienteAPIDTO clientAPIDTO)
+        // POST: api/cupones/reclamar
+        [HttpPost("reclamar")]
+        public async Task<IActionResult> ReclamarCupon([FromBody] ReclamarCuponDTO clientAPIDTO)
         {
             try
             {
-                var response = await _clientAPI.RequestCoupon(clientAPIDTO);
+                var response = await _clientAPI.ReclamarCupon(clientAPIDTO);
 
                 // Log
-                Log.Information("Endpoint access POST: api/cupones/solicitar");
+                Log.Information("Endpoint access POST: api/cupones/reclamar");
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 // Log
-                Log.Error($"Endpoint access POST: api/cupones/solicitar ({ex.Message})");
+                Log.Error($"Endpoint access POST: api/cupones/reclamar ({ex.Message})");
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // POST: api/cupones/usar
+        [HttpPost("usar")]
+        public async Task<IActionResult> UsarCupon([FromBody] UsarCuponDTO usarCuponDTO)
+        {
+            try
+            {
+                var response = await _clientAPI.UsarCupon(usarCuponDTO);
+
+                // Log
+                Log.Information("Endpoint access POST: api/cupones/usar");
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Log
+                Log.Error($"Endpoint access POST: api/cupones/usar ({ex.Message})");
 
                 return BadRequest(ex.Message);
             }

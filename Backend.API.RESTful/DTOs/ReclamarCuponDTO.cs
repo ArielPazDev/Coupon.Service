@@ -1,8 +1,10 @@
 ﻿namespace Backend.API.RESTful.DTOs
 {
-    public class ClienteDTO
+    public class ReclamarCuponDTO
     {
         public int Id_Cupon { get; set; }
+        //public string NroCupon { get; set; }
+        //public DateOnly FechaAsignado { get; set; }
         public string CodCliente { get; set; }
         public string Email { get; set; }
     }
