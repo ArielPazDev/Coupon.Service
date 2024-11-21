@@ -4,7 +4,9 @@ using Backend.API.RESTful.Interfaces;
 using Backend.API.RESTful.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace Backend.API.RESTful.Controllers
 {
@@ -14,17 +16,17 @@ namespace Backend.API.RESTful.Controllers
     {
         private readonly DatabaseContext _db;
         private readonly ICuponesService _cuponesService;
-        private readonly ISendEmailService _sendEmailService;
+        private readonly IMailerService _mailerService;
 
-        public SolicitudCuponesController(DatabaseContext db, ICuponesService cuponesService, ISendEmailService sendEmailService)
+        public SolicitudCuponesController(DatabaseContext db, ICuponesService cuponesService, IMailerService mailerService)
         {
             _db = db;
             _cuponesService = cuponesService;
-            _sendEmailService = sendEmailService;
+            _mailerService = mailerService;
         }
 
-        [HttpPost("SolicitarCupon")]
-        public async Task<IActionResult> SolicitarCupon(ClienteDTO clienteDTO)
+        [HttpPost("SolicitudCupon")]
+        public async Task<IActionResult> SolicitudCupon(ClienteDTO clienteDTO)
         {
             try
             {
@@ -36,17 +38,18 @@ namespace Backend.API.RESTful.Controllers
                 Cupon_ClienteModel cupon_ClienteModel = new Cupon_ClienteModel();
                 cupon_ClienteModel.Id_Cupon = clienteDTO.Id_Cupon;
                 cupon_ClienteModel.NroCupon = nroCupon;
-                cupon_ClienteModel.FechaAsignado = DateOnly.FromDateTime(DateTime.Now);
+                cupon_ClienteModel.FechaAsignado = DateTime.Now;
                 cupon_ClienteModel.CodCliente = clienteDTO.CodCliente;
 
                 _db.Cupones_Clientes.Add(cupon_ClienteModel);
                 await _db.SaveChangesAsync();
 
-                await _sendEmailService.EnviarEmailCliente(clienteDTO.Email, nroCupon);
+                if (!clienteDTO.CodCliente.IsNullOrEmpty())
+                    await _mailerService.SendEmail(clienteDTO.Email, nroCupon);
 
                 return Ok(new
                 {
-                    Mensaje = "Se dio de alta el registro",
+                    Mensaje = "El cupón se dio de alta",
                     NroCupon = nroCupon
                 });
             }
@@ -56,9 +59,43 @@ namespace Backend.API.RESTful.Controllers
             }
         }
 
-        /*[HttpPost("UsarCupon")]
-        public async Task<IActionResult> UsarCupon(string nroCupon, string codCliente, string emailCliente)
+        [HttpPost("QuemadoCupon")]
+        public async Task<IActionResult> QuemadoCupon(string nroCupon)
         {
-        }*/
+            try
+            {
+                var cupon_ClienteModel = await _db.Cupones_Clientes.FirstOrDefaultAsync(c => c.NroCupon == nroCupon);
+
+                if (cupon_ClienteModel == null)
+                {
+                    // Log
+                    //Log.Information($"Endpoint access GET: api/cupones/clientes/{id} (not found)");
+
+                    return NotFound();
+                }
+
+                Cupones_HistorialModel cupones_HistorialModel = new Cupones_HistorialModel();
+                cupones_HistorialModel.Id_Cupon = cupon_ClienteModel.Id_Cupon;
+                cupones_HistorialModel.NroCupon = nroCupon;
+                cupones_HistorialModel.FechaUso = DateTime.Now;
+                cupones_HistorialModel.CodCliente = cupon_ClienteModel.CodCliente;
+
+                _db.Cupones_Historial.Add(cupones_HistorialModel);
+                await _db.SaveChangesAsync();
+
+                _db.Cupones_Clientes.Remove(cupon_ClienteModel);
+                await _db.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    Mensaje = "El cupón se quemó",
+                    NroCupon = nroCupon
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
+        }
     }
 }

@@ -141,7 +141,9 @@ namespace Backend.API.RESTful.Controllers
                 return NotFound();
             }
 
-            _db.Cupones.Remove(cuponModel);
+            cuponModel.Activo = false;
+
+            _db.Entry(cuponModel).State = EntityState.Modified;
             await _db.SaveChangesAsync();
 
             // Log

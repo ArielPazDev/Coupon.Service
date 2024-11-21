@@ -18,6 +18,7 @@ namespace Backend.API.RESTful.Models
         public bool Activo { get; set; }
 
         public virtual ICollection<Cupon_CategoriaModel>? Cupones_Categorias { get; set; }
+
         [ForeignKey("Id_Tipo_Cupon")]
         public virtual Tipo_CuponModel? Tipo_Cupon { get; set; }
     }

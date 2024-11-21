@@ -10,7 +10,7 @@ namespace Backend.API.RESTful.Models
         public int Id_Cupon { get; set; }
         [Key]
         public string? NroCupon { get; set; }
-        public DateOnly? FechaAsignado { get; set; }
+        public DateTime? FechaAsignado { get; set; }
         public string CodCliente {  get; set; }
     }
 }

@@ -11,9 +11,9 @@ namespace Clients.API.Controllers
     [ApiController]
     public class ClienteAPIController : ControllerBase
     {
-        private readonly ClienteAPIInterface _clientAPI;
+        private readonly IClienteAPIService _clientAPI;
 
-        public ClienteAPIController(ClienteAPIInterface clientAPI)
+        public ClienteAPIController(IClienteAPIService clientAPI)
         {
             _clientAPI = clientAPI;
         }

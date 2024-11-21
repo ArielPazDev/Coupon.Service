@@ -5,9 +5,9 @@ using System.Net.Mail;
 
 namespace Backend.API.RESTful.Services
 {
-    public class SendEmailService : ISendEmailService
+    public class MailerService : IMailerService
     {
-        public async Task EnviarEmailCliente(string emailcliente, string nroCupon)
+        public async Task SendEmail(string emailcliente, string nroCupon)
         {
             string emailDesde = "programacioniv.unlz@gmail.com";
             string emailClave = "ourw bweu qpzc jiuk";

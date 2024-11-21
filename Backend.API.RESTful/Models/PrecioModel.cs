@@ -9,6 +9,6 @@ namespace Backend.API.RESTful.Models
         [Key]
         public int Id_Precio { get; set; }
         public int Id_Articulo { get; set; }
-        public float Precio {  get; set; }
+        public decimal Precio {  get; set; }
     }
 }

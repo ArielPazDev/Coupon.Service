@@ -135,7 +135,9 @@ namespace Backend.API.RESTful.Controllers
                 return NotFound();
             }
 
-            _db.Precios.Remove(precioModel);
+            precioModel.Precio = 0m;
+
+            _db.Entry(precioModel).State = EntityState.Modified;
             await _db.SaveChangesAsync();
 
             // Log

@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Dependency Injection
 builder.Services.AddScoped<ICuponesService, CuponesService>();
-builder.Services.AddScoped<ISendEmailService, SendEmailService>();
+builder.Services.AddScoped<IMailerService, MailerService>();
 
 // Database
 builder.Services.AddDbContext<DatabaseContext>

@@ -31,6 +31,13 @@ namespace Backend.API.RESTful.Controllers
                 _db.Articulos.Add(articuloModel);
                 await _db.SaveChangesAsync();
 
+                PrecioModel precioModel = new PrecioModel();
+                precioModel.Id_Articulo = articuloModel.Id_Articulo;
+                precioModel.Precio = 0;
+
+                _db.Precios.Add(precioModel);
+                await _db.SaveChangesAsync();
+
                 // Log
                 Log.Information("Endpoint access POST: api/articulos");
             }
@@ -59,7 +66,8 @@ namespace Backend.API.RESTful.Controllers
             // Log
             Log.Information("Endpoint access GET: api/articulos");
 
-            return await _db.Articulos.Include(a => a.Precio).ToListAsync();
+            //return await _db.Articulos.Include(a => a.Precio).ToListAsync();
+            return await _db.Articulos.ToListAsync();
         }
 
         // GET: api/articulos/{id}
@@ -135,7 +143,9 @@ namespace Backend.API.RESTful.Controllers
                 return NotFound();
             }
 
-            _db.Articulos.Remove(articuloModel);
+            articuloModel.Activo = false;
+
+            _db.Entry(articuloModel).State = EntityState.Modified;
             await _db.SaveChangesAsync();
 
             // Log
