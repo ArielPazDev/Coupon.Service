@@ -6,6 +6,6 @@ namespace Clients.API.Interfaces
     {
         Task<string> ReclamarCupon(ReclamarCuponDTO clientAPIDTO);
         Task<string> UsarCupon(UsarCuponDTO usarCuponDTO);
-        Task<string> ObtenerCuponesActivos(ObtenerCuponesActivosDTO obtenerCuponesActivosDTO);
+        Task<string> ObtenerCupones(ObtenerCuponesDTO obtenerCuponesDTO);
     }
 }

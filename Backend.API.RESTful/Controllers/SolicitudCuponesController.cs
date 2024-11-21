@@ -10,7 +10,7 @@ using Serilog;
 
 namespace Backend.API.RESTful.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cupones/solicitud")]
     [ApiController]
     public class SolicitudCuponesController : ControllerBase
     {
@@ -25,13 +25,19 @@ namespace Backend.API.RESTful.Controllers
             _mailerService = mailerService;
         }
 
-        [HttpPost("SolicitudCupon")]
+        // POST: api/cupones/solicitud/reclamar
+        [HttpPost("reclamar")]
         public async Task<IActionResult> SolicitudCupon(ReclamarCuponDTO reclamarCuponDTO)
         {
             try
             {
                 if (reclamarCuponDTO.CodCliente.IsNullOrEmpty())
+                {
+                    // Log
+                    Log.Information("Endpoint access POST: api/cupones/solicitud/reclamar (CodCliente null)");
+
                     throw new Exception("El CodCliente no puede estar vacio");
+                }
 
                 string nroCupon = await _cuponesService.GenerarNroCupon();
 
@@ -47,9 +53,12 @@ namespace Backend.API.RESTful.Controllers
                 if (!reclamarCuponDTO.CodCliente.IsNullOrEmpty())
                     await _mailerService.SendEmail(reclamarCuponDTO.Email, nroCupon);
 
+                // Log
+                Log.Information($"Endpoint access POST: api/cupones/solicitud/reclamar (NroCupon {nroCupon})");
+
                 return Ok(new
                 {
-                    Mensaje = "El cupón se dio de alta",
+                    Mensaje = "Alta de cupón",
                     NroCupon = nroCupon
                 });
             }
@@ -59,7 +68,8 @@ namespace Backend.API.RESTful.Controllers
             }
         }
 
-        [HttpPost("QuemadoCupon")]
+        // POST: api/cupones/solicitud/usar
+        [HttpPost("usar")]
         public async Task<IActionResult> QuemadoCupon(UsarCuponDTO usarCuponDTO)
         {
             try
@@ -69,7 +79,7 @@ namespace Backend.API.RESTful.Controllers
                 if (cupon_ClienteModel == null)
                 {
                     // Log
-                    //Log.Information($"Endpoint access GET: api/cupones/clientes/{id} (not found)");
+                    Log.Information("Endpoint access POST: api/cupones/solicitud/usar (not found)");
 
                     return NotFound();
                 }
@@ -86,6 +96,9 @@ namespace Backend.API.RESTful.Controllers
                 _db.Cupones_Clientes.Remove(cupon_ClienteModel);
                 await _db.SaveChangesAsync();
 
+                // Log
+                Log.Information("Endpoint access POST: api/cupones/solicitud/usar");
+
                 return Ok(new
                 {
                     Mensaje = "El cupón se quemó",
@@ -96,6 +109,16 @@ namespace Backend.API.RESTful.Controllers
             {
                 return BadRequest($"Error: {ex.Message}");
             }
+        }
+
+        // GET: api/cupones/solicitud/obtener
+        [HttpGet("obtener/{codCliente}")]
+        public async Task<ActionResult<IEnumerable<Cupon_ClienteModel>>> ObtenerClientes(string codCliente)
+        {
+            // Log
+            Log.Information("Endpoint access GET: api/cupones/solicitud/obtener");
+
+            return await _db.Cupones_Clientes.Where(c => c.CodCliente == codCliente).ToListAsync();
         }
     }
 }

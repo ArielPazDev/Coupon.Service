@@ -19,7 +19,7 @@ namespace Clients.API.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 // HTTP Client (request / response)
-                var response = await httpClient.PostAsync("https://localhost:7000/api/SolicitudCupones/SolicitudCupon", content);
+                var response = await httpClient.PostAsync("https://localhost:7000/api/cupones/solicitud/reclamar", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -52,7 +52,7 @@ namespace Clients.API.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 // HTTP Client (request / response)
-                var response = await httpClient.PostAsync("https://localhost:7000/api/SolicitudCupones/QuemadoCupon", content);
+                var response = await httpClient.PostAsync("https://localhost:7000/api/cupones/solicitud/usar", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -73,7 +73,7 @@ namespace Clients.API.Services
             }
         }
 
-        public async Task<string> ObtenerCuponesActivos(ObtenerCuponesActivosDTO obtenerCuponesActivosDTO)
+        public async Task<string> ObtenerCupones(ObtenerCuponesDTO obtenerCuponesDTO)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace Clients.API.Services
                 var httpClient = new HttpClient();
 
                 // HTTP Client (request / response)
-                var response = await httpClient.GetAsync("https://localhost:7000/api/SolicitudCupones/ObtenerCuponesActivos?CodCliente=" + obtenerCuponesActivosDTO.CodCliente);
+                var response = await httpClient.GetAsync("https://localhost:7000/api/cupones/solicitud/obtener/" + obtenerCuponesDTO.CodCliente);
 
                 if (response.IsSuccessStatusCode)
                 {

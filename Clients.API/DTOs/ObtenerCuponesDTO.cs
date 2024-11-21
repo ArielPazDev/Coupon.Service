@@ -1,6 +1,6 @@
 ﻿namespace Clients.API.DTOs
 {
-    public class ObtenerCuponesActivosDTO
+    public class ObtenerCuponesDTO
     {
         public string CodCliente { get; set; }
     }

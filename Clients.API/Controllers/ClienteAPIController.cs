@@ -64,11 +64,11 @@ namespace Clients.API.Controllers
 
         // POST: api/cupones/obtener
         [HttpPost("obtener")]
-        public async Task<IActionResult> ObtenerCuponesActivos([FromBody] ObtenerCuponesActivosDTO obtenerCuponesActivosDTO)
+        public async Task<IActionResult> ObtenerCupones([FromBody] ObtenerCuponesDTO obtenerCuponesDTO)
         {
             try
             {
-                var response = await _clientAPI.ObtenerCuponesActivos(obtenerCuponesActivosDTO);
+                var response = await _clientAPI.ObtenerCupones(obtenerCuponesDTO);
 
                 // Log
                 Log.Information("Endpoint access POST: api/cupones/obtener");
