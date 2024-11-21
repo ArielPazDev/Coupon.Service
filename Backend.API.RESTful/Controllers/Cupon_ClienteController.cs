@@ -28,7 +28,8 @@ namespace Backend.API.RESTful.Controllers
         {
             try
             {
-                cupon_ClienteModel.FechaAsignado = DateTime.Now.Date;
+                cupon_ClienteModel.NroCupon = "000-000-000";
+                cupon_ClienteModel.FechaAsignado = DateOnly.FromDateTime(DateTime.Now);
 
                 _db.Cupones_Clientes.Add(cupon_ClienteModel);
                 await _db.SaveChangesAsync();

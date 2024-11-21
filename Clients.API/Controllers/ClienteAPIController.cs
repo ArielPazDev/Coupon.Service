@@ -7,34 +7,34 @@ using Serilog;
 
 namespace Clients.API.Controllers
 {
-    [Route("coupon/request")]
+    [Route("api/cupones/solicitar")]
     [ApiController]
-    public class ClientAPIController : ControllerBase
+    public class ClienteAPIController : ControllerBase
     {
-        private readonly ClientAPIInterface _clientAPI;
+        private readonly ClienteAPIInterface _clientAPI;
 
-        public ClientAPIController(ClientAPIInterface clientAPI)
+        public ClienteAPIController(ClienteAPIInterface clientAPI)
         {
             _clientAPI = clientAPI;
         }
 
-        // POST: coupon/request
+        // POST: api/cupones/solicitar
         [HttpPost]
-        public async Task<IActionResult> SendRequestCoupon([FromBody] ClientAPIDTO clientAPIDTO)
+        public async Task<IActionResult> SendRequestCoupon([FromBody] ClienteAPIDTO clientAPIDTO)
         {
             try
             {
                 var response = await _clientAPI.RequestCoupon(clientAPIDTO);
 
                 // Log
-                Log.Information("Endpoint access POST: coupon/request");
+                Log.Information("Endpoint access POST: api/cupones/solicitar");
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 // Log
-                Log.Error($"Endpoint access POST: coupon/request ({ex.Message})");
+                Log.Error($"Endpoint access POST: api/cupones/solicitar ({ex.Message})");
 
                 return BadRequest(ex.Message);
             }

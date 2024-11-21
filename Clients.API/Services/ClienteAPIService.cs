@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Clients.API.Services
 {
-    public class ClientAPIService : ClientAPIInterface
+    public class ClienteAPIService : ClienteAPIInterface
     {
-        public async Task<string> RequestCoupon(ClientAPIDTO clientAPIDTO)
+        public async Task<string> RequestCoupon(ClienteAPIDTO clientAPIDTO)
         {
             try
             {
@@ -19,7 +19,8 @@ namespace Clients.API.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 // HTTP Client (request / response)
-                var response = await httpClient.PostAsync("https://localhost:7000/api/Cupon_Cliente", content);
+                //var response = await httpClient.PostAsync("https://localhost:7000/api/cupones/clientes", content);
+                var response = await httpClient.PostAsync("https://localhost:7000/api/SolicitudCupones/SolicitarCupon", content);
 
                 if (response.IsSuccessStatusCode)
                 {

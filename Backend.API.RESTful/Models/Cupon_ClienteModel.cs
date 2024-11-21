@@ -9,8 +9,8 @@ namespace Backend.API.RESTful.Models
         [ForeignKey("Id_Cupon")]
         public int Id_Cupon { get; set; }
         [Key]
-        public string NroCupon { get; set; }
-        public DateTime? FechaAsignado { get; set; }
+        public string? NroCupon { get; set; }
+        public DateOnly? FechaAsignado { get; set; }
         public string CodCliente {  get; set; }
     }
 }

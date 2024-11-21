@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Clients.API.Models
 {
     [Table("Clientes")]
-    public class ClientModel
+    public class ClienteModel
     {
         [Key]
         public string CodCliente { get; set; }

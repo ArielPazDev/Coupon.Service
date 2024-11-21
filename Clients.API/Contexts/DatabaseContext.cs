@@ -7,11 +7,11 @@ namespace Clients.API.Contexts
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        public DbSet<ClientModel> Clients { get; set; }
+        public DbSet<ClienteModel> Clients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ClientModel>().HasKey(c => c.CodCliente);
+            modelBuilder.Entity<ClienteModel>().HasKey(c => c.CodCliente);
 
             base.OnModelCreating(modelBuilder);
         }

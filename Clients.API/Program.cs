@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Dependency Injection
-builder.Services.AddScoped<ClientAPIInterface, ClientAPIService>();
+builder.Services.AddScoped<ClienteAPIInterface, ClienteAPIService>();
 
 // Database
 builder.Services.AddDbContext<DatabaseContext>

@@ -1,4 +1,6 @@
 using Backend.API.RESTful.Contexts;
+using Backend.API.RESTful.Interfaces;
+using Backend.API.RESTful.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Text.Json.Serialization;
@@ -15,7 +17,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 // Dependency Injection
-
+builder.Services.AddScoped<ICuponesService, CuponesService>();
+builder.Services.AddScoped<ISendEmailService, SendEmailService>();
 
 // Database
 builder.Services.AddDbContext<DatabaseContext>
