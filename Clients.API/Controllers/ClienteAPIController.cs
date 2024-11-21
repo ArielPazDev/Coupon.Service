@@ -61,5 +61,27 @@ namespace Clients.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        // POST: api/cupones/obtener
+        [HttpPost("obtener")]
+        public async Task<IActionResult> ObtenerCuponesActivos([FromBody] ObtenerCuponesActivosDTO obtenerCuponesActivosDTO)
+        {
+            try
+            {
+                var response = await _clientAPI.ObtenerCuponesActivos(obtenerCuponesActivosDTO);
+
+                // Log
+                Log.Information("Endpoint access POST: api/cupones/obtener");
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // Log
+                Log.Error($"Endpoint access POST: api/cupones/obtener ({ex.Message})");
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

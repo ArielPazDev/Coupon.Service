@@ -73,16 +73,33 @@ namespace Clients.API.Services
             }
         }
 
-        /*public async Task<string> ObtenerCuponesActivos(string codCliente)
+        public async Task<string> ObtenerCuponesActivos(ObtenerCuponesActivosDTO obtenerCuponesActivosDTO)
         {
             try
             {
+                // HTTP Client
+                var httpClient = new HttpClient();
 
+                // HTTP Client (request / response)
+                var response = await httpClient.GetAsync("https://localhost:7000/api/SolicitudCupones/ObtenerCuponesActivos?CodCliente=" + obtenerCuponesActivosDTO.CodCliente);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+
+                    return message;
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+
+                    throw new Exception($"Error: {error}");
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error: {ex.Message}");
             }
-        }*/
+        }
     }
 }
