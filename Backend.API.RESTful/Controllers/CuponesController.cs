@@ -64,6 +64,7 @@ namespace Backend.API.RESTful.Controllers
                 .Cupones
                 .Include(c => c.Cupones_Categorias)
                     .ThenInclude(cc => cc.Categoria)
+                .Include(c => c.Tipo_Cupon)
                 .ToListAsync();
         }
 
